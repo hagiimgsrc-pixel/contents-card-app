@@ -87,7 +87,7 @@ export default function Home() {
       {view === "login" && (
         <main style={{ minHeight: "100vh", backgroundColor: "#fff", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "40px" }}>
           <div style={{ marginBottom: "60px" }}>
-            {/* ファイル名を VENU_.logo.png に修正 */}
+            {/* ファイル名をlogo.png に修正 */}
             <Image src="/logo.png" width={220} height={80} alt="VENU." style={{ objectFit: "contain" }} priority />
           </div>
           <form onSubmit={(e) => { e.preventDefault(); setView("list"); }} style={{ width: "100%", maxWidth: "300px", display: "flex", flexDirection: "column", gap: "16px" }}>
