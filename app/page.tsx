@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 
-// --- フォント設定 (Noto Sans JP, Plus Jakarta Sans) ---
+// --- フォント設定 ---
 const FontSettings = () => (
   <style jsx global>{`
     @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&family=Plus+Jakarta+Sans:wght@700&display=swap');
@@ -25,7 +25,6 @@ const FontSettings = () => (
 
 type ViewState = "login" | "list" | "details";
 
-// コンテンツデータ
 const contents = [
   { id: 1, title: "Netherwalk", artist: "YOICHI HAGIWARA", serial: "1456", image: "/jacket.jpg" },
   { id: 2, title: "悠久のアルカナ", artist: "久牧彰", serial: "3122", image: "/jacket2.jpg" },
@@ -36,30 +35,27 @@ export default function Home() {
   const [view, setView] = useState<ViewState>("login");
   const [selected, setSelected] = useState(contents[0]);
 
-  // --- 【修正3, 4】 共通コンポーネント: 下部ナビゲーション ---
+  // --- 下部ナビゲーション ---
   const BottomNav = () => {
-    // ナビゲーションアイテムのコンポーネント（選択時のスタイル適用）
     const NavItem = ({ name, iconSrc, isActive }: { name: string; iconSrc: string; isActive: boolean }) => (
       <div
         style={{
           textAlign: "center",
           cursor: "pointer",
-          // 【修正4】選択中のアイコンの裏にグレーを敷く＆角丸
           backgroundColor: isActive ? "#f3f4f6" : "transparent",
           padding: isActive ? "8px 20px" : "8px",
           borderRadius: "24px",
           transition: "all 0.2s ease",
         }}
       >
-        {/* 【修正3】アイコンと文字の位置を近づける (margin-bottomを2pxに縮小) */}
-        <Image src={iconSrc} width={24} height={24} alt={name} style={{ display: "block", margin: "0 auto 2px" }} />
+        {/* 【修正】アイコンと文字をさらに近づける (margin-bottom: 0px) */}
+        <Image src={iconSrc} width={24} height={24} alt={name} style={{ display: "block", margin: "0 auto 0px" }} />
         <span className="nav-text" style={{ fontSize: "10px", color: isActive ? "#1f2937" : "#9ca3af" }}>{name}</span>
       </div>
     );
 
     return (
       <div style={{ position: "fixed", bottom: 0, left: 0, right: 0, height: "90px", backgroundColor: "#fff", borderTop: "1px solid #eee", display: "flex", justifyContent: "space-evenly", alignItems: "center", paddingBottom: "15px", zIndex: 100 }}>
-        {/* 今回はデザイン案に合わせて左端のGEMMをアクティブ状態(isActive=true)として表示 */}
         <NavItem name="GEMM" iconSrc="/gemm.png" isActive={true} />
         <NavItem name="MUNE" iconSrc="/mune.png" isActive={false} />
         <NavItem name="LOOPA" iconSrc="/loopa.png" isActive={false} />
@@ -67,21 +63,17 @@ export default function Home() {
     );
   };
 
-  // --- 【修正2】 共通コンポーネント: ヘッダー（検索ウィンドウ追加） ---
   const Header = () => (
     <div style={{ display: "flex", alignItems: "center", padding: "20px 24px", gap: "16px", backgroundColor: "#fff" }}>
-      {/* ダミーの検索ウィンドウ */}
       <div style={{ flex: 1, display: "flex", alignItems: "center", backgroundColor: "#f3f4f6", borderRadius: "12px", padding: "12px 16px" }}>
-        {/* 虫眼鏡アイコン（簡易的に文字で代用。画像に差し替え可能） */}
         <span style={{ color: "#9ca3af", marginRight: "8px", fontSize: "14px" }}>🔍</span>
         <input
           type="text"
-          placeholder="Search..." // デザイン案に合わせてプレースホルダーを設定
-          readOnly // ダミーなので入力不可に設定
+          placeholder="Search..."
+          readOnly
           style={{ border: "none", background: "transparent", outline: "none", fontSize: "14px", width: "100%", fontFamily: "'Noto Sans JP', sans-serif", color: "#1f2937" }}
         />
       </div>
-      {/* プロフィールアイコン（右端に配置） */}
       <div style={{ width: "40px", height: "40px", borderRadius: "50%", overflow: "hidden", border: "1px solid #eee", flexShrink: 0 }}>
         <Image src="/profile.jpg" width={40} height={40} alt="User" style={{ objectFit: "cover" }} />
       </div>
@@ -92,22 +84,22 @@ export default function Home() {
     <>
       <FontSettings />
 
-      {/* 1. ログイン画面 (TOP) */}
+      {/* 1. ログイン画面 */}
       {view === "login" && (
         <main style={{ minHeight: "100vh", backgroundColor: "#fff", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "40px" }}>
           <div style={{ marginBottom: "60px" }}>
-            {/* 【修正1】 ロゴサイズを大きく (元の1.2倍程度: 180x60 -> 216x72 に変更) */}
-            <Image src="/logo.png" width={216} height={72} alt="VENU." priority style={{ height: "auto" }} />
+            {/* 【修正】ロゴサイズを1.1倍 (180x60 -> 198x66) に調整 */}
+            <Image src="/logo.png" width={198} height={66} alt="VENU." priority style={{ height: "auto" }} />
           </div>
           <form onSubmit={(e) => { e.preventDefault(); setView("list"); }} style={{ width: "100%", maxWidth: "300px", display: "flex", flexDirection: "column", gap: "12px" }}>
             <input type="text" placeholder="name" style={{ padding: "14px 16px", borderRadius: "8px", border: "1px solid #e5e7eb", fontSize: "14px", backgroundColor: "#f9fafb" }} />
             <input type="password" placeholder="password" style={{ padding: "14px 16px", borderRadius: "8px", border: "1px solid #e5e7eb", fontSize: "14px", backgroundColor: "#f9fafb" }} />
-            <button type="submit" style={{ marginTop: "12px", padding: "14px", borderRadius: "8px", border: "none", backgroundColor: "#3b82f6", color: "#fff", fontSize: "16px", fontWeight: "bold", cursor: "pointer", transition: "background-color 0.2s" }}>sign in</button>
+            <button type="submit" style={{ marginTop: "12px", padding: "14px", borderRadius: "8px", border: "none", backgroundColor: "#3b82f6", color: "#fff", fontSize: "16px", fontWeight: "bold", cursor: "pointer" }}>sign in</button>
           </form>
         </main>
       )}
 
-      {/* 2. マイページ (一覧画面) */}
+      {/* 2. マイページ */}
       {view === "list" && (
         <main style={{ minHeight: "100vh", backgroundColor: "#fff", paddingBottom: "110px" }}>
           <Header />
@@ -148,16 +140,13 @@ export default function Home() {
               <p style={{ fontSize: "12px", color: "#9ca3af" }}>Serial: {selected.serial}</p>
             </div>
 
-            {/* 音源プレーヤー */}
             <div style={{ marginBottom: "48px" }}>
               <audio controls style={{ width: "100%", maxWidth: "320px", borderRadius: "8px" }}>
                 <source src="/FamilyMart_Demo.mp3" type="audio/mpeg" />
               </audio>
             </div>
 
-            {/* 【修正5】 追加コンテンツエリア (動画、写真、QR) */}
             <div style={{ textAlign: "left", maxWidth: "320px", margin: "0 auto" }}>
-
               {/* 特典映像 */}
               <div style={{ marginBottom: "40px" }}>
                 <h3 style={{ fontSize: "15px", fontWeight: "bold", marginBottom: "12px", color: "#1f2937" }}>特典映像：Behind The Scenes</h3>
@@ -166,31 +155,26 @@ export default function Home() {
                     <source src="/Behind_The_Scenes.mp4" type="video/mp4" />
                   </video>
                 </div>
-                <p style={{ fontSize: "12px", color: "#ef4444", marginTop: "8px" }}>※映像が入る</p>
+                {/* 【修正】赤文字の削除 */}
               </div>
 
               {/* 特典写真 */}
               <div style={{ marginBottom: "40px" }}>
                 <h3 style={{ fontSize: "15px", fontWeight: "bold", marginBottom: "12px", color: "#1f2937" }}>特典写真：Barで撮った写真</h3>
                 <div style={{ borderRadius: "12px", overflow: "hidden", boxShadow: "0 4px 10px rgba(0,0,0,0.05)" }}>
-                  {/* ↓↓↓ 画像ファイルを用意して public フォルダに入れてください ↓↓↓ */}
                   <Image src="/bar_photo.jpg" width={320} height={213} alt="Bar Photo" style={{ width: "100%", height: "auto", display: "block", backgroundColor: "#f3f4f6" }} />
-                  {/* ↑↑↑ 仮のファイル名 bar_photo.jpg を指定しています ↑↑↑ */}
                 </div>
-                <p style={{ fontSize: "12px", color: "#ef4444", marginTop: "8px" }}>※写真が入る</p>
+                {/* 【修正】赤文字の削除 */}
               </div>
 
               {/* ライブチケットQR */}
               <div style={{ marginBottom: "20px" }}>
                 <h3 style={{ fontSize: "15px", fontWeight: "bold", marginBottom: "12px", color: "#1f2937" }}>ライブチケット</h3>
                 <div style={{ display: "flex", justifyContent: "center", padding: "24px", backgroundColor: "#fff", borderRadius: "12px", border: "1px solid #e5e7eb", boxShadow: "0 2px 5px rgba(0,0,0,0.05)" }}>
-                  {/* ↓↓↓ QR画像ファイルを用意して public フォルダに入れてください ↓↓↓ */}
                   <Image src="/ticket_qr.png" width={140} height={140} alt="Ticket QR" style={{ display: "block" }} />
-                   {/* ↑↑↑ 仮のファイル名 ticket_qr.png を指定しています ↑↑↑ */}
                 </div>
-                <p style={{ fontSize: "12px", color: "#ef4444", marginTop: "8px" }}>※QR画像が入る</p>
+                {/* 【修正】赤文字の削除 */}
               </div>
-
             </div>
           </div>
           <BottomNav />
