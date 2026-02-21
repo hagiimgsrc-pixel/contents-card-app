@@ -3,22 +3,23 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 
-// フォントとグローバル設定
-const GlobalSettings = () => (
+// Noto Sans JP と Plus Jakarta Sans を Google Fonts から読み込み
+const FontAndMetaSettings = () => (
   <style jsx global>{`
     @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&family=Plus+Jakarta+Sans:wght@700&display=swap');
 
     body {
       font-family: 'Noto Sans JP', sans-serif;
       margin: 0;
-      color: #1a1a1a;
       -webkit-font-smoothing: antialiased;
+      touch-action: manipulation;
+      background-color: #fff;
     }
 
     .nav-text {
       font-family: 'Plus Jakarta Sans', sans-serif;
       font-weight: 700;
-      letter-spacing: 0.02em;
+      letter-spacing: 0.05em;
     }
 
     input {
@@ -43,57 +44,61 @@ export default function Home() {
     window.scrollTo(0, 0);
   }, [view]);
 
-  // --- 共通コンポーネント: 上部検索バー ---
+  // --- 共通コンポーネント: 検索バー付きヘッダー ---
+  // ① プロフィール画像を検索ウィンドウの外に出し、完全な円形で表示
   const SearchHeader = () => (
-    <div style={{ padding: "20px 20px 10px", backgroundColor: "#fff" }}>
-      <div style={{ display: "flex", alignItems: "center", gap: "10px", backgroundColor: "#f3f4f6", padding: "8px 16px", borderRadius: "25px" }}>
-        <span style={{ color: "#999" }}>🔍</span>
+    <div style={{ padding: "16px 24px", backgroundColor: "#fff", display: "flex", alignItems: "center", gap: "16px" }}>
+      <div style={{ flex: 1, display: "flex", alignItems: "center", gap: "10px", backgroundColor: "#f3f4f6", padding: "10px 16px", borderRadius: "25px" }}>
+        <span style={{ color: "#999", fontSize: "14px" }}>🔍</span>
         <input
           type="text"
           placeholder="Search in Contents"
-          style={{ border: "none", backgroundColor: "transparent", width: "100%", outline: "none", color: "#666" }}
+          style={{ border: "none", backgroundColor: "transparent", width: "100%", outline: "none", color: "#333", fontSize: "14px" }}
         />
-        {/* 文字の「Y」からプロフィール画像に変更 */}
-        <div style={{ width: "32px", height: "32px", borderRadius: "50%", overflow: "hidden", border: "1px solid #eee" }}>
-          <Image src="/profile.jpg" width={32} height={32} alt="User" style={{ objectFit: "cover" }} />
-        </div>
+      </div>
+      {/* プロフィール画像: 外に出して正円で表示 */}
+      <div style={{ width: "36px", height: "36px", borderRadius: "50%", overflow: "hidden", flexShrink: 0 }}>
+        <Image src="/profile.jpg" width={36} height={36} alt="User" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
       </div>
     </div>
   );
 
-  // --- 共通コンポーネント: 下部ナビゲーション ---
+  // --- 下部ナビゲーション ---
+  // ② アイコンと文字を近づけ、上部の線との距離を離す
   const BottomNav = () => (
-    <div style={{ position: "fixed", bottom: 0, left: 0, right: 0, height: "85px", backgroundColor: "#fff", borderTop: "1px solid #f0f0f0", display: "flex", justifyContent: "space-around", alignItems: "center", paddingBottom: "15px", zIndex: 100 }}>
-      <div style={{ textAlign: "center", backgroundColor: "#f3f4f6", padding: "8px 20px", borderRadius: "25px", minWidth: "80px" }}>
-        <Image src="/gemm.png" width={22} height={22} alt="GEMM" style={{ display: "block", margin: "0 auto 4px" }} />
-        <span className="nav-text" style={{ fontSize: "10px", color: "#000" }}>GEMM</span>
+    <div style={{ position: "fixed", bottom: 0, left: 0, right: 0, backgroundColor: "#fff", borderTop: "1px solid #eee", display: "flex", justifyContent: "space-around", alignItems: "flex-start", padding: "12px 0 20px", zIndex: 100 }}>
+      {/* GEMM */}
+      <div style={{ textAlign: "center", width: "60px" }}>
+        <Image src="/gemm.png" width={24} height={24} alt="GEMM" style={{ display: "block", margin: "0 auto 2px" }} />
+        <span className="nav-text" style={{ fontSize: "9px", color: "#333", display: "block" }}>GEMM</span>
       </div>
-      <div style={{ textAlign: "center", minWidth: "80px" }}>
-        <Image src="/mune.png" width={22} height={22} alt="MUNE" style={{ display: "block", margin: "0 auto 4px", opacity: 0.6 }} />
-        <span className="nav-text" style={{ fontSize: "10px", color: "#999" }}>MUNE</span>
+      {/* MUNE */}
+      <div style={{ textAlign: "center", width: "60px" }}>
+        <Image src="/mune.png" width={24} height={24} alt="MUNE" style={{ display: "block", margin: "0 auto 2px", opacity: 0.5 }} />
+        <span className="nav-text" style={{ fontSize: "9px", color: "#999", display: "block" }}>MUNE</span>
       </div>
-      <div style={{ textAlign: "center", minWidth: "80px" }}>
-        <Image src="/loopa.png" width={22} height={22} alt="LOOPA" style={{ display: "block", margin: "0 auto 4px", opacity: 0.6 }} />
-        <span className="nav-text" style={{ fontSize: "10px", color: "#999" }}>LOOPA</span>
+      {/* LOOPA */}
+      <div style={{ textAlign: "center", width: "60px" }}>
+        <Image src="/loopa.png" width={24} height={24} alt="LOOPA" style={{ display: "block", margin: "0 auto 2px", opacity: 0.5 }} />
+        <span className="nav-text" style={{ fontSize: "9px", color: "#999", display: "block" }}>LOOPA</span>
       </div>
     </div>
   );
 
   return (
     <>
-      <GlobalSettings />
+      <FontAndMetaSettings />
 
       {/* 1. ログイン画面 */}
       {view === "login" && (
         <main style={{ minHeight: "100vh", backgroundColor: "#fff", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "40px" }}>
           <div style={{ marginBottom: "60px" }}>
-            {/* ファイル名をlogo.png に修正 */}
-            <Image src="/logo.png" width={220} height={80} alt="VENU." style={{ objectFit: "contain" }} priority />
+            <Image src="/logo.png" width={180} height={60} alt="VENU." priority style={{ objectFit: "contain" }} />
           </div>
-          <form onSubmit={(e) => { e.preventDefault(); setView("list"); }} style={{ width: "100%", maxWidth: "300px", display: "flex", flexDirection: "column", gap: "16px" }}>
-            <input type="text" placeholder="name" required style={{ padding: "14px 18px", borderRadius: "10px", border: "1px solid #e0e0e0", outline: "none" }} />
-            <input type="password" placeholder="password" required style={{ padding: "14px 18px", borderRadius: "10px", border: "1px solid #e0e0e0", outline: "none" }} />
-            <button type="submit" style={{ marginTop: "8px", padding: "14px", borderRadius: "10px", border: "none", backgroundColor: "#228be6", color: "#fff", fontSize: "16px", fontWeight: "bold", cursor: "pointer" }}>sign in</button>
+          <form onSubmit={(e) => { e.preventDefault(); setView("list"); }} style={{ width: "100%", maxWidth: "300px", display: "flex", flexDirection: "column", gap: "12px" }}>
+            <input type="text" placeholder="name" required style={{ padding: "14px 16px", borderRadius: "8px", border: "1px solid #eee", backgroundColor: "#fafafa" }} />
+            <input type="password" placeholder="password" required style={{ padding: "14px 16px", borderRadius: "8px", border: "1px solid #eee", backgroundColor: "#fafafa" }} />
+            <button type="submit" style={{ marginTop: "16px", padding: "14px", borderRadius: "8px", border: "none", backgroundColor: "#228be6", color: "#fff", fontSize: "16px", fontWeight: "bold", cursor: "pointer" }}>sign in</button>
           </form>
         </main>
       )}
@@ -102,17 +107,17 @@ export default function Home() {
       {view === "list" && (
         <main style={{ minHeight: "100vh", backgroundColor: "#fff", paddingBottom: "100px" }}>
           <SearchHeader />
-          <div style={{ padding: "10px 24px" }}>
-            <h2 style={{ fontSize: "14px", fontWeight: "bold", color: "#666", marginBottom: "20px" }}>Suggested</h2>
+          <div style={{ padding: "20px 24px" }}>
+            <h2 style={{ fontSize: "13px", fontWeight: "bold", color: "#999", marginBottom: "16px" }}>Suggested</h2>
             {contents.map((item) => (
-              <div key={item.id} onClick={() => { setSelected(item); setView("details"); }} style={{ display: "flex", alignItems: "center", gap: "16px", marginBottom: "20px", cursor: "pointer" }}>
-                <div style={{ width: "70px", height: "70px", borderRadius: "8px", overflow: "hidden", boxShadow: "0 4px 12px rgba(0,0,0,0.08)" }}>
-                  <Image src={item.image} width={70} height={70} alt={item.title} style={{ objectFit: "cover" }} />
+              <div key={item.id} onClick={() => { setSelected(item); setView("details"); }} style={{ display: "flex", alignItems: "center", gap: "16px", marginBottom: "24px", cursor: "pointer" }}>
+                <div style={{ width: "64px", height: "64px", borderRadius: "6px", overflow: "hidden", flexShrink: 0, boxShadow: "0 2px 6px rgba(0,0,0,0.05)" }}>
+                  <Image src={item.image} width={64} height={64} alt={item.title} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
                 </div>
                 <div>
-                  <div style={{ fontWeight: "bold", fontSize: "15px" }}>{item.title}</div>
-                  <div style={{ fontSize: "12px", color: "#1a1a1a", marginTop: "2px" }}>{item.artist}</div>
-                  <div style={{ fontSize: "11px", color: "#aaa", marginTop: "4px" }}>Serial: {item.serial}</div>
+                  <div style={{ fontWeight: "bold", fontSize: "14px", color: "#333" }}>{item.title}</div>
+                  <div style={{ fontSize: "11px", color: "#666", marginTop: "4px", fontWeight: "bold" }}>{item.artist}</div>
+                  <div style={{ fontSize: "10px", color: "#aaa", marginTop: "4px" }}>Serial: {item.serial}</div>
                 </div>
               </div>
             ))}
@@ -125,55 +130,58 @@ export default function Home() {
       {view === "details" && (
         <main style={{ minHeight: "100vh", backgroundColor: "#fff", paddingBottom: "120px" }}>
           <SearchHeader />
-          <div style={{ padding: "0 24px" }}>
-            <button onClick={() => setView("list")} style={{ margin: "10px 0 20px", background: "none", border: "none", color: "#aaa", fontSize: "14px", cursor: "pointer" }}>← Back</button>
+          <div style={{ padding: "0 24px 40px" }}>
+            <button onClick={() => setView("list")} style={{ margin: "16px 0 24px", background: "none", border: "none", color: "#aaa", fontSize: "14px", cursor: "pointer", padding: 0 }}>
+              ← Back
+            </button>
 
-            <div style={{ textAlign: "center", marginBottom: "32px" }}>
-              <div style={{ width: "100%", maxWidth: "340px", margin: "0 auto", borderRadius: "12px", overflow: "hidden", boxShadow: "0 12px 40px rgba(0,0,0,0.12)" }}>
-                <Image src={selected.image} width={340} height={340} alt={selected.title} style={{ width: "100%", height: "auto" }} />
+            <div style={{ textAlign: "center", marginBottom: "40px" }}>
+              <div style={{ width: "100%", maxWidth: "300px", margin: "0 auto", borderRadius: "12px", overflow: "hidden", boxShadow: "0 8px 24px rgba(0,0,0,0.1)" }}>
+                <Image src={selected.image} width={300} height={300} alt={selected.title} style={{ width: "100%", height: "auto" }} />
               </div>
               <div style={{ marginTop: "24px" }}>
-                <h2 style={{ fontSize: "22px", fontWeight: "bold", marginBottom: "4px" }}>{selected.title}</h2>
-                <p style={{ fontSize: "14px", color: "#333", marginBottom: "4px" }}>{selected.artist}</p>
-                <p style={{ fontSize: "12px", color: "#bbb" }}>Serial: {selected.serial}</p>
+                <h2 style={{ fontSize: "18px", fontWeight: "bold", marginBottom: "6px", color: "#333" }}>{selected.title}</h2>
+                <p style={{ fontSize: "13px", color: "#666", marginBottom: "4px", fontWeight: "bold" }}>{selected.artist}</p>
+                <p style={{ fontSize: "11px", color: "#aaa" }}>Serial: {selected.serial}</p>
               </div>
             </div>
 
-            {/* 各種コンテンツセクションを復活 */}
-            <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
-              {/* 1. 楽曲再生 */}
+            <div style={{ display: "flex", flexDirection: "column", gap: "40px" }}>
+              {/* 楽曲再生 */}
               <div>
-                <p style={{ fontSize: "13px", fontWeight: "bold", color: "#666", marginBottom: "12px" }}>🎵 楽曲再生</p>
-                <audio controls style={{ width: "100%" }}>
+                <p style={{ fontSize: "12px", fontWeight: "bold", color: "#aaa", marginBottom: "8px" }}>🎵 楽曲再生</p>
+                <audio controls style={{ width: "100%", outline: "none" }}>
                   <source src="/FamilyMart_Demo.mp3" type="audio/mpeg" />
                 </audio>
               </div>
 
-              {/* 2. 特典動画 */}
+              {/* 特典動画 */}
               <div>
-                <p style={{ fontSize: "13px", fontWeight: "bold", color: "#666", marginBottom: "12px" }}>🎬 特典動画</p>
-                <video controls style={{ width: "100%", borderRadius: "8px", backgroundColor: "#000" }}>
-                  <source src="/Behind_The_Scenes.mp4" type="video/mp4" />
-                </video>
+                <p style={{ fontSize: "12px", fontWeight: "bold", color: "#aaa", marginBottom: "8px" }}>🎬 特典動画</p>
+                <div style={{ borderRadius: "8px", overflow: "hidden", backgroundColor: "#000" }}>
+                  <video controls style={{ width: "100%", display: "block" }}>
+                    <source src="/Behind_The_Scenes.mp4" type="video/mp4" />
+                  </video>
+                </div>
               </div>
 
-              {/* 3. 特典写真・ライブチケット（リスト形式） */}
-              <div>
-                <p style={{ fontSize: "13px", fontWeight: "bold", color: "#666", marginBottom: "12px" }}>🎫 その他特典</p>
-                <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: "12px", padding: "12px", backgroundColor: "#f9fafb", borderRadius: "8px" }}>
-                    <div style={{ width: "40px", height: "40px", backgroundColor: "#eee", borderRadius: "4px", display: "flex", alignItems: "center", justifyContent: "center" }}>📸</div>
-                    <div>
-                      <div style={{ fontSize: "14px", fontWeight: "bold" }}>Tour_Photo.jpg</div>
-                      <div style={{ fontSize: "11px", color: "#999" }}>特定写真</div>
-                    </div>
+              {/* ③ その他特典（画像全体を表示するレイアウトに変更） */}
+              <div style={{ display: "flex", flexDirection: "column", gap: "32px" }}>
+                {/* 特典写真 */}
+                <div>
+                  <p style={{ fontSize: "16px", fontWeight: "bold", marginBottom: "16px", color: "#333" }}>特典写真</p>
+                  <div style={{ width: "100%", borderRadius: "12px", overflow: "hidden" }}>
+                    {/* Tour_Photo.jpg を public フォルダに入れてください */}
+                    <Image src="/Tour_Photo.jpg" width={400} height={300} alt="特典写真" style={{ width: "100%", height: "auto", display: "block" }} />
                   </div>
-                  <div style={{ display: "flex", alignItems: "center", gap: "12px", padding: "12px", backgroundColor: "#f9fafb", borderRadius: "8px" }}>
-                    <div style={{ width: "40px", height: "40px", backgroundColor: "#eee", borderRadius: "4px", display: "flex", alignItems: "center", justifyContent: "center" }}>🎟️</div>
-                    <div>
-                      <div style={{ fontSize: "14px", fontWeight: "bold" }}>Live_Ticket_2026</div>
-                      <div style={{ fontSize: "11px", color: "#999" }}>ライブチケット</div>
-                    </div>
+                </div>
+
+                {/* ライブチケット (QRコード) */}
+                <div>
+                  <p style={{ fontSize: "16px", fontWeight: "bold", marginBottom: "16px", color: "#333" }}>ライブチケット</p>
+                  <div style={{ width: "100%", display: "flex", justifyContent: "center" }}>
+                    {/* qr_code.png を public フォルダに入れてください */}
+                    <Image src="/qr_code.png" width={180} height={180} alt="QRコード" style={{ width: "180px", height: "180px" }} />
                   </div>
                 </div>
               </div>
