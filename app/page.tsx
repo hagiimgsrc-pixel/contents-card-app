@@ -1,27 +1,57 @@
-'use client';
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+// app/page.tsx または src/app/page.tsx
+import Image from "next/image";
 
-export default function LoginPage() {
-  const router = useRouter();
-  const [loading, setLoading] = useState(false);
-
-  const handleSignIn = (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    setTimeout(() => router.push('/mypage'), 800);
-  };
-
+export default function Home() {
   return (
-    <div className="min-h-screen bg-black text-white flex flex-col items-center justify-center p-6 font-sans">
-      <h1 className="text-3xl font-bold mb-12 tracking-widest uppercase">Contents Card</h1>
-      <form onSubmit={handleSignIn} className="w-full max-w-sm space-y-4">
-        <input type="text" placeholder="Name" className="w-full p-4 bg-zinc-900 rounded-xl outline-none text-white focus:ring-2 focus:ring-emerald-500" required />
-        <input type="password" placeholder="Password" className="w-full p-4 bg-zinc-900 rounded-xl outline-none text-white focus:ring-2 focus:ring-emerald-500" required />
-        <button className="w-full bg-emerald-500 text-black p-4 rounded-xl font-bold active:scale-95 transition-transform mt-8">
-          {loading ? 'Signing in...' : 'Sign in'}
-        </button>
-      </form>
-    </div>
+    <main style={{ minHeight: "100vh", padding: "24px", display: "flex", justifyContent: "center", alignItems: "center", backgroundColor: "#f9fafb" }}>
+      <div style={{
+        border: "1px solid #e5e7eb",
+        borderRadius: "16px",
+        padding: "24px",
+        width: "100%",
+        maxWidth: "400px",
+        backgroundColor: "#ffffff",
+        boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)",
+        fontFamily: "sans-serif"
+      }}>
+        <h1 style={{ fontSize: "1.5rem", fontWeight: "bold", textAlign: "center", marginBottom: "24px", color: "#111827" }}>
+          コンテンツカード
+        </h1>
+
+        {/* 1. 画像の表示 (jacket.jpg) */}
+        <div style={{ marginBottom: "24px" }}>
+          <Image
+            src="/jacket.jpg"
+            alt="Jacket Cover"
+            width={400}
+            height={300}
+            style={{ width: "100%", height: "auto", borderRadius: "8px", objectFit: "cover" }}
+            priority // 優先的に読み込む設定
+          />
+        </div>
+
+        {/* 2. 音声の再生 (FamilyMart_Demo.mp3) */}
+        <div style={{ marginBottom: "24px" }}>
+          <p style={{ margin: "0 0 8px 0", fontSize: "0.9rem", color: "#4b5563", fontWeight: "bold" }}>
+            🎵 FamilyMart Demo
+          </p>
+          <audio controls style={{ width: "100%" }}>
+            <source src="/FamilyMart_Demo.mp3" type="audio/mpeg" />
+            お使いのブラウザは音声再生をサポートしていません。
+          </audio>
+        </div>
+
+        {/* 3. 動画の再生 (Behind_The_Scenes.mp4) */}
+        <div>
+          <p style={{ margin: "0 0 8px 0", fontSize: "0.9rem", color: "#4b5563", fontWeight: "bold" }}>
+            🎬 Behind The Scenes
+          </p>
+          <video controls style={{ width: "100%", borderRadius: "8px", backgroundColor: "#000" }}>
+            <source src="/Behind_The_Scenes.mp4" type="video/mp4" />
+            お使いのブラウザは動画再生をサポートしていません。
+          </video>
+        </div>
+      </div>
+    </main>
   );
 }
