@@ -3,115 +3,126 @@
 import { useState } from "react";
 import Image from "next/image";
 
+// Noto Sans JP と Plus Jakarta Sans を Google Fonts から読み込むためのスタイル
+const FontSettings = () => (
+  <style jsx global>{`
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&family=Plus+Jakarta+Sans:wght@700&display=swap');
+
+    body {
+      font-family: 'Noto Sans JP', sans-serif;
+      margin: 0;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .nav-text {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+    }
+  `}</style>
+);
+
 type ViewState = "login" | "list" | "details";
+
+const contents = [
+  { id: 1, title: "Netherwalk", artist: "YOICHI HAGIWARA", serial: "1456", image: "/jacket.jpg" },
+  { id: 2, title: "悠久のアルカナ", artist: "久牧彰", serial: "3122", image: "/jacket2.jpg" },
+  { id: 3, title: "SUNDANCE PLOP", artist: "PLOP", serial: "457", image: "/jacket3.jpg" },
+];
 
 export default function Home() {
   const [view, setView] = useState<ViewState>("login");
-  const [selectedTitle, setSelectedTitle] = useState("2026 Journey");
+  const [selected, setSelected] = useState(contents[0]);
 
-  // 1. ログイン処理
-  const handleLogin = (e: React.FormEvent) => {
-    e.preventDefault();
-    setView("list");
-  };
-
-  // フォルダのリスト
-  const folders = [
-    "2026 Journey",
-    "Project 2025",
-    "Event 2024"
-  ];
-
-  // --- フォルダ一覧画面 ---
-  const ListScreen = () => (
-    <div style={{ padding: "40px", textAlign: "center", width: "100%", maxWidth: "400px" }}>
-      <h1 style={{ fontSize: "1.5rem", fontWeight: "bold", marginBottom: "32px", color: "#333" }}>マイページ</h1>
-      <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-        {folders.map((folder) => (
-          <div
-            key={folder}
-            onClick={() => {
-              setSelectedTitle(folder); // クリックしたフォルダ名をタイトルに設定
-              setView("details");
-            }}
-            style={{
-              cursor: "pointer",
-              display: "flex",
-              alignItems: "center",
-              padding: "16px 20px",
-              backgroundColor: "#fff",
-              borderRadius: "12px",
-              boxShadow: "0 2px 4px rgba(0,0,0,0.05)",
-              border: "1px solid #eee",
-              gap: "12px",
-              transition: "transform 0.1s"
-            }}
-          >
-            <span style={{ fontSize: "2rem" }}>📁</span>
-            <span style={{ fontWeight: "bold", color: "#4b5563" }}>{folder}</span>
-          </div>
-        ))}
+  // --- 共通コンポーネント: 下部ナビゲーション ---
+  const BottomNav = () => (
+    <div style={{ position: "fixed", bottom: 0, left: 0, right: 0, height: "85px", backgroundColor: "#fff", borderTop: "1px solid #eee", display: "flex", justifyContent: "space-around", alignItems: "center", paddingBottom: "15px", zIndex: 100 }}>
+      <div style={{ textAlign: "center" }}>
+        <Image src="/gemm.png" width={24} height={24} alt="GEMM" style={{ display: "block", margin: "0 auto 6px" }} />
+        <span className="nav-text" style={{ fontSize: "10px" }}>GEMM</span>
+      </div>
+      <div style={{ textAlign: "center" }}>
+        <Image src="/mune.png" width={24} height={24} alt="MUNE" style={{ display: "block", margin: "0 auto 6px" }} />
+        <span className="nav-text" style={{ fontSize: "10px" }}>MUNE</span>
+      </div>
+      <div style={{ textAlign: "center" }}>
+        <Image src="/loopa.png" width={24} height={24} alt="LOOPA" style={{ display: "block", margin: "0 auto 6px" }} />
+        <span className="nav-text" style={{ fontSize: "10px" }}>LOOPA</span>
       </div>
     </div>
   );
 
-  // --- 詳細画面（中身は共通） ---
-  const DetailsScreen = () => (
-    <div style={{ border: "1px solid #e5e7eb", borderRadius: "20px", padding: "32px", width: "100%", maxWidth: "420px", backgroundColor: "#ffffff", boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.1)", fontFamily: "sans-serif" }}>
-      <button
-        onClick={() => setView("list")}
-        style={{ marginBottom: "16px", background: "none", border: "none", color: "#0070f3", cursor: "pointer", fontSize: "0.9rem" }}
-      >
-        ← 戻る
-      </button>
-
-      <h1 style={{ fontSize: "1.5rem", fontWeight: "bold", textAlign: "center", marginBottom: "24px", color: "#1f2937" }}>
-        {selectedTitle}
-      </h1>
-
-      <div style={{ marginBottom: "24px" }}>
-        <Image
-          src="/jacket.jpg"
-          alt="Jacket Cover"
-          width={400}
-          height={300}
-          style={{ width: "100%", height: "auto", borderRadius: "12px", objectFit: "cover" }}
-          priority
-        />
-      </div>
-
-      <div style={{ marginBottom: "24px" }}>
-        <p style={{ margin: "0 0 8px 0", fontSize: "0.85rem", color: "#6b7280" }}>🎵 デモ音源</p>
-        <audio controls style={{ width: "100%" }}>
-          <source src="/FamilyMart_Demo.mp3" type="audio/mpeg" />
-        </audio>
-      </div>
-
-      <div>
-        <p style={{ margin: "0 0 8px 0", fontSize: "0.85rem", color: "#6b7280" }}>🎬 メイキング映像</p>
-        <video controls style={{ width: "100%", borderRadius: "12px", backgroundColor: "#000" }}>
-          <source src="/Behind_The_Scenes.mp4" type="video/mp4" />
-        </video>
+  const Header = () => (
+    <div style={{ display: "flex", justifyContent: "flex-end", padding: "20px" }}>
+      <div style={{ width: "40px", height: "40px", borderRadius: "50%", overflow: "hidden", border: "1px solid #eee" }}>
+        <Image src="/profile.jpg" width={40} height={40} alt="User" />
       </div>
     </div>
   );
 
   return (
-    <main style={{ minHeight: "100vh", display: "flex", justifyContent: "center", alignItems: "center", backgroundColor: "#f3f4f6" }}>
+    <>
+      <FontSettings />
+
+      {/* 1. ログイン画面 */}
       {view === "login" && (
-        <div style={{ padding: "40px", backgroundColor: "#fff", borderRadius: "16px", boxShadow: "0 4px 6px rgba(0,0,0,0.1)", width: "100%", maxWidth: "360px", textAlign: "center" }}>
-          <h1 style={{ fontSize: "1.5rem", fontWeight: "bold", marginBottom: "24px", color: "#333" }}>CONTENTS CARD</h1>
-          <form onSubmit={handleLogin} style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-            <input type="text" placeholder="name" required style={{ padding: "12px", borderRadius: "8px", border: "1px solid #ddd" }} />
-            <input type="password" placeholder="password" required style={{ padding: "12px", borderRadius: "8px", border: "1px solid #ddd" }} />
-            <button type="submit" style={{ padding: "12px", borderRadius: "8px", border: "none", backgroundColor: "#0070f3", color: "#fff", fontWeight: "bold", cursor: "pointer" }}>
-              サインイン
-            </button>
+        <main style={{ minHeight: "100vh", backgroundColor: "#fff", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "40px" }}>
+          <div style={{ marginBottom: "60px" }}>
+            <Image src="/logo.png" width={180} height={60} alt="VENU." priority />
+          </div>
+          <form onSubmit={(e) => { e.preventDefault(); setView("list"); }} style={{ width: "100%", maxWidth: "300px", display: "flex", flexDirection: "column", gap: "12px" }}>
+            <input type="text" placeholder="name" style={{ padding: "12px 16px", borderRadius: "8px", border: "1px solid #ccc", fontSize: "16px" }} />
+            <input type="password" placeholder="password" style={{ padding: "12px 16px", borderRadius: "8px", border: "1px solid #ccc", fontSize: "16px" }} />
+            <button type="submit" style={{ marginTop: "12px", padding: "14px", borderRadius: "8px", border: "none", backgroundColor: "#0088cc", color: "#fff", fontSize: "16px", fontWeight: "bold", cursor: "pointer" }}>sign in</button>
           </form>
-        </div>
+        </main>
       )}
-      {view === "list" && <ListScreen />}
-      {view === "details" && <DetailsScreen />}
-    </main>
+
+      {/* 2. マイページ */}
+      {view === "list" && (
+        <main style={{ minHeight: "100vh", backgroundColor: "#fff", paddingBottom: "100px" }}>
+          <Header />
+          <div style={{ padding: "0 24px" }}>
+            {contents.map((item) => (
+              <div key={item.id} onClick={() => { setSelected(item); setView("details"); }} style={{ display: "flex", alignItems: "center", gap: "16px", marginBottom: "20px", cursor: "pointer" }}>
+                <div style={{ width: "80px", height: "80px", borderRadius: "4px", overflow: "hidden", boxShadow: "0 2px 8px rgba(0,0,0,0.1)" }}>
+                  <Image src={item.image} width={80} height={80} alt={item.title} />
+                </div>
+                <div>
+                  <div style={{ fontWeight: "bold", fontSize: "16px" }}>{item.title}</div>
+                  <div style={{ fontSize: "12px", color: "#333", marginTop: "2px" }}>{item.artist}</div>
+                  <div style={{ fontSize: "12px", color: "#999", marginTop: "4px" }}>Serial: {item.serial}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+          <BottomNav />
+        </main>
+      )}
+
+      {/* 3. 詳細画面 */}
+      {view === "details" && (
+        <main style={{ minHeight: "100vh", backgroundColor: "#fff", paddingBottom: "100px" }}>
+          <Header />
+          <div style={{ padding: "0 24px", textAlign: "center" }}>
+            <button onClick={() => setView("list")} style={{ display: "block", marginBottom: "20px", background: "none", border: "none", color: "#999", fontSize: "14px", cursor: "pointer" }}>← Back</button>
+            <div style={{ width: "100%", maxWidth: "320px", margin: "0 auto", borderRadius: "8px", overflow: "hidden", boxShadow: "0 10px 30px rgba(0,0,0,0.15)" }}>
+              <Image src={selected.image} width={320} height={320} alt={selected.title} style={{ width: "100%", height: "auto" }} />
+            </div>
+            <div style={{ marginTop: "24px" }}>
+              <h2 style={{ fontSize: "20px", fontWeight: "bold", marginBottom: "4px" }}>{selected.title}</h2>
+              <p style={{ fontSize: "14px", color: "#333", marginBottom: "4px" }}>{selected.artist}</p>
+              <p style={{ fontSize: "12px", color: "#999" }}>Serial: {selected.serial}</p>
+            </div>
+            <div style={{ marginTop: "32px" }}>
+              <audio controls style={{ width: "100%", maxWidth: "320px" }}>
+                <source src="/FamilyMart_Demo.mp3" type="audio/mpeg" />
+              </audio>
+            </div>
+          </div>
+          <BottomNav />
+        </main>
+      )}
+    </>
   );
 }
