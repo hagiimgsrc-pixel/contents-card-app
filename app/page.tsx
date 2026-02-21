@@ -108,7 +108,7 @@ export default function Home() {
         <main style={{ minHeight: "100vh", backgroundColor: "#fff", paddingBottom: "100px" }}>
           <SearchHeader />
           <div style={{ padding: "20px 24px" }}>
-            <h2 style={{ fontSize: "13px", fontWeight: "bold", color: "#999", marginBottom: "16px" }}>Suggested</h2>
+            <h2 style={{ fontSize: "13px", fontWeight: "bold", color: "#999", marginBottom: "16px" }}></h2>
             {contents.map((item) => (
               <div key={item.id} onClick={() => { setSelected(item); setView("details"); }} style={{ display: "flex", alignItems: "center", gap: "16px", marginBottom: "24px", cursor: "pointer" }}>
                 <div style={{ width: "64px", height: "64px", borderRadius: "6px", overflow: "hidden", flexShrink: 0, boxShadow: "0 2px 6px rgba(0,0,0,0.05)" }}>
