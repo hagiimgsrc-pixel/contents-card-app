@@ -6,8 +6,8 @@ import Image from "next/image";
 type ViewState = "login" | "list" | "details";
 
 export default function Home() {
-  // 現在どの画面を表示するかを管理 ("login" | "list" | "details")
   const [view, setView] = useState<ViewState>("login");
+  const [selectedTitle, setSelectedTitle] = useState("2026 Journey");
 
   // 1. ログイン処理
   const handleLogin = (e: React.FormEvent) => {
@@ -15,34 +15,49 @@ export default function Home() {
     setView("list");
   };
 
-  // 2. フォルダ（一覧）画面
+  // フォルダのリスト
+  const folders = [
+    "2026 Journey",
+    "Project 2025",
+    "Event 2024"
+  ];
+
+  // --- フォルダ一覧画面 ---
   const ListScreen = () => (
     <div style={{ padding: "40px", textAlign: "center", width: "100%", maxWidth: "400px" }}>
       <h1 style={{ fontSize: "1.5rem", fontWeight: "bold", marginBottom: "32px", color: "#333" }}>マイページ</h1>
-      <div
-        onClick={() => setView("details")}
-        style={{
-          cursor: "pointer",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          padding: "20px",
-          backgroundColor: "#fff",
-          borderRadius: "12px",
-          boxShadow: "0 2px 4px rgba(0,0,0,0.05)",
-          border: "1px solid #eee"
-        }}
-      >
-        <span style={{ fontSize: "3rem", marginBottom: "8px" }}>📁</span>
-        <span style={{ fontWeight: "bold", color: "#4b5563" }}>2026_Journey</span>
+      <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+        {folders.map((folder) => (
+          <div
+            key={folder}
+            onClick={() => {
+              setSelectedTitle(folder); // クリックしたフォルダ名をタイトルに設定
+              setView("details");
+            }}
+            style={{
+              cursor: "pointer",
+              display: "flex",
+              alignItems: "center",
+              padding: "16px 20px",
+              backgroundColor: "#fff",
+              borderRadius: "12px",
+              boxShadow: "0 2px 4px rgba(0,0,0,0.05)",
+              border: "1px solid #eee",
+              gap: "12px",
+              transition: "transform 0.1s"
+            }}
+          >
+            <span style={{ fontSize: "2rem" }}>📁</span>
+            <span style={{ fontWeight: "bold", color: "#4b5563" }}>{folder}</span>
+          </div>
+        ))}
       </div>
     </div>
   );
 
-  // 3. 詳細画面（前回のマイページ）
+  // --- 詳細画面（中身は共通） ---
   const DetailsScreen = () => (
     <div style={{ border: "1px solid #e5e7eb", borderRadius: "20px", padding: "32px", width: "100%", maxWidth: "420px", backgroundColor: "#ffffff", boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.1)", fontFamily: "sans-serif" }}>
-      {/* 戻るボタン */}
       <button
         onClick={() => setView("list")}
         style={{ marginBottom: "16px", background: "none", border: "none", color: "#0070f3", cursor: "pointer", fontSize: "0.9rem" }}
@@ -51,7 +66,7 @@ export default function Home() {
       </button>
 
       <h1 style={{ fontSize: "1.5rem", fontWeight: "bold", textAlign: "center", marginBottom: "24px", color: "#1f2937" }}>
-        2026 Journey
+        {selectedTitle}
       </h1>
 
       <div style={{ marginBottom: "24px" }}>
@@ -81,7 +96,6 @@ export default function Home() {
     </div>
   );
 
-  // メインレンダリング
   return (
     <main style={{ minHeight: "100vh", display: "flex", justifyContent: "center", alignItems: "center", backgroundColor: "#f3f4f6" }}>
       {view === "login" && (
@@ -96,7 +110,6 @@ export default function Home() {
           </form>
         </div>
       )}
-
       {view === "list" && <ListScreen />}
       {view === "details" && <DetailsScreen />}
     </main>
