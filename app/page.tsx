@@ -53,8 +53,9 @@ export default function Home() {
           placeholder="Search in Contents"
           style={{ border: "none", backgroundColor: "transparent", width: "100%", outline: "none", color: "#666" }}
         />
-        <div style={{ width: "32px", height: "32px", borderRadius: "50%", backgroundColor: "#3b82f6", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "14px", fontWeight: "bold" }}>
-          Y
+        {/* 文字の「Y」からプロフィール画像に変更 */}
+        <div style={{ width: "32px", height: "32px", borderRadius: "50%", overflow: "hidden", border: "1px solid #eee" }}>
+          <Image src="/profile.jpg" width={32} height={32} alt="User" style={{ objectFit: "cover" }} />
         </div>
       </div>
     </div>
@@ -63,17 +64,14 @@ export default function Home() {
   // --- 共通コンポーネント: 下部ナビゲーション ---
   const BottomNav = () => (
     <div style={{ position: "fixed", bottom: 0, left: 0, right: 0, height: "85px", backgroundColor: "#fff", borderTop: "1px solid #f0f0f0", display: "flex", justifyContent: "space-around", alignItems: "center", paddingBottom: "15px", zIndex: 100 }}>
-      {/* GEMM (選択状態) */}
       <div style={{ textAlign: "center", backgroundColor: "#f3f4f6", padding: "8px 20px", borderRadius: "25px", minWidth: "80px" }}>
         <Image src="/gemm.png" width={22} height={22} alt="GEMM" style={{ display: "block", margin: "0 auto 4px" }} />
         <span className="nav-text" style={{ fontSize: "10px", color: "#000" }}>GEMM</span>
       </div>
-
       <div style={{ textAlign: "center", minWidth: "80px" }}>
         <Image src="/mune.png" width={22} height={22} alt="MUNE" style={{ display: "block", margin: "0 auto 4px", opacity: 0.6 }} />
         <span className="nav-text" style={{ fontSize: "10px", color: "#999" }}>MUNE</span>
       </div>
-
       <div style={{ textAlign: "center", minWidth: "80px" }}>
         <Image src="/loopa.png" width={22} height={22} alt="LOOPA" style={{ display: "block", margin: "0 auto 4px", opacity: 0.6 }} />
         <span className="nav-text" style={{ fontSize: "10px", color: "#999" }}>LOOPA</span>
@@ -89,8 +87,8 @@ export default function Home() {
       {view === "login" && (
         <main style={{ minHeight: "100vh", backgroundColor: "#fff", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "40px" }}>
           <div style={{ marginBottom: "60px" }}>
-            {/* ロゴのファイル名を、実際にアップロードされていた名前に合わせています */}
-            <Image src="/VENU_.logo.png" width={200} height={70} alt="VENU." style={{ objectFit: "contain" }} priority />
+            {/* ファイル名を VENU_.logo.png に修正 */}
+            <Image src="/VENU_.logo.png" width={220} height={80} alt="VENU." style={{ objectFit: "contain" }} priority />
           </div>
           <form onSubmit={(e) => { e.preventDefault(); setView("list"); }} style={{ width: "100%", maxWidth: "300px", display: "flex", flexDirection: "column", gap: "16px" }}>
             <input type="text" placeholder="name" required style={{ padding: "14px 18px", borderRadius: "10px", border: "1px solid #e0e0e0", outline: "none" }} />
@@ -125,11 +123,12 @@ export default function Home() {
 
       {/* 3. 詳細画面 */}
       {view === "details" && (
-        <main style={{ minHeight: "100vh", backgroundColor: "#fff", paddingBottom: "100px" }}>
+        <main style={{ minHeight: "100vh", backgroundColor: "#fff", paddingBottom: "120px" }}>
           <SearchHeader />
           <div style={{ padding: "0 24px" }}>
             <button onClick={() => setView("list")} style={{ margin: "10px 0 20px", background: "none", border: "none", color: "#aaa", fontSize: "14px", cursor: "pointer" }}>← Back</button>
-            <div style={{ textAlign: "center" }}>
+
+            <div style={{ textAlign: "center", marginBottom: "32px" }}>
               <div style={{ width: "100%", maxWidth: "340px", margin: "0 auto", borderRadius: "12px", overflow: "hidden", boxShadow: "0 12px 40px rgba(0,0,0,0.12)" }}>
                 <Image src={selected.image} width={340} height={340} alt={selected.title} style={{ width: "100%", height: "auto" }} />
               </div>
@@ -138,10 +137,45 @@ export default function Home() {
                 <p style={{ fontSize: "14px", color: "#333", marginBottom: "4px" }}>{selected.artist}</p>
                 <p style={{ fontSize: "12px", color: "#bbb" }}>Serial: {selected.serial}</p>
               </div>
-              <div style={{ marginTop: "32px" }}>
-                <audio controls style={{ width: "100%", maxWidth: "340px" }}>
+            </div>
+
+            {/* 各種コンテンツセクションを復活 */}
+            <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
+              {/* 1. 楽曲再生 */}
+              <div>
+                <p style={{ fontSize: "13px", fontWeight: "bold", color: "#666", marginBottom: "12px" }}>🎵 楽曲再生</p>
+                <audio controls style={{ width: "100%" }}>
                   <source src="/FamilyMart_Demo.mp3" type="audio/mpeg" />
                 </audio>
+              </div>
+
+              {/* 2. 特典動画 */}
+              <div>
+                <p style={{ fontSize: "13px", fontWeight: "bold", color: "#666", marginBottom: "12px" }}>🎬 特典動画</p>
+                <video controls style={{ width: "100%", borderRadius: "8px", backgroundColor: "#000" }}>
+                  <source src="/Behind_The_Scenes.mp4" type="video/mp4" />
+                </video>
+              </div>
+
+              {/* 3. 特典写真・ライブチケット（リスト形式） */}
+              <div>
+                <p style={{ fontSize: "13px", fontWeight: "bold", color: "#666", marginBottom: "12px" }}>🎫 その他特典</p>
+                <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: "12px", padding: "12px", backgroundColor: "#f9fafb", borderRadius: "8px" }}>
+                    <div style={{ width: "40px", height: "40px", backgroundColor: "#eee", borderRadius: "4px", display: "flex", alignItems: "center", justifyContent: "center" }}>📸</div>
+                    <div>
+                      <div style={{ fontSize: "14px", fontWeight: "bold" }}>Tour_Photo.jpg</div>
+                      <div style={{ fontSize: "11px", color: "#999" }}>特定写真</div>
+                    </div>
+                  </div>
+                  <div style={{ display: "flex", alignItems: "center", gap: "12px", padding: "12px", backgroundColor: "#f9fafb", borderRadius: "8px" }}>
+                    <div style={{ width: "40px", height: "40px", backgroundColor: "#eee", borderRadius: "4px", display: "flex", alignItems: "center", justifyContent: "center" }}>🎟️</div>
+                    <div>
+                      <div style={{ fontSize: "14px", fontWeight: "bold" }}>Live_Ticket_2026</div>
+                      <div style={{ fontSize: "11px", color: "#999" }}>ライブチケット</div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
