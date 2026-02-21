@@ -3,29 +3,26 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 
-// Noto Sans JP と Plus Jakarta Sans を Google Fonts から読み込み
-// 同時に、iOSの自動ズームを防ぐメタ設定を疑似的に適用
-const FontAndMetaSettings = () => (
+// フォントとグローバル設定
+const GlobalSettings = () => (
   <style jsx global>{`
     @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&family=Plus+Jakarta+Sans:wght@700&display=swap');
 
     body {
       font-family: 'Noto Sans JP', sans-serif;
       margin: 0;
+      color: #1a1a1a;
       -webkit-font-smoothing: antialiased;
-      /* 入力時のズームを防ぐための設定 */
-      touch-action: manipulation;
     }
 
     .nav-text {
       font-family: 'Plus Jakarta Sans', sans-serif;
       font-weight: 700;
-      letter-spacing: 0.05em;
+      letter-spacing: 0.02em;
     }
 
-    /* iOSで入力欄がズームされないよう16pxを保証 */
     input {
-      font-size: 16px !important;
+      font-size: 16px !important; /* iOSのズーム防止 */
     }
   `}</style>
 );
@@ -42,70 +39,82 @@ export default function Home() {
   const [view, setView] = useState<ViewState>("login");
   const [selected, setSelected] = useState(contents[0]);
 
-  // 画面遷移時にスクロール位置を一番上に戻し、ズームの影響をリセットする
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [view]);
 
-  // --- 下部ナビゲーション ---
-  const BottomNav = () => (
-    <div style={{ position: "fixed", bottom: 0, left: 0, right: 0, height: "85px", backgroundColor: "#fff", borderTop: "1px solid #eee", display: "flex", justifyContent: "space-around", alignItems: "center", paddingBottom: "15px", zIndex: 100 }}>
-      <div style={{ textAlign: "center" }}>
-        <Image src="/gemm.png" width={24} height={24} alt="GEMM" style={{ display: "block", margin: "0 auto 6px" }} />
-        <span className="nav-text" style={{ fontSize: "10px" }}>GEMM</span>
-      </div>
-      <div style={{ textAlign: "center" }}>
-        <Image src="/mune.png" width={24} height={24} alt="MUNE" style={{ display: "block", margin: "0 auto 6px" }} />
-        <span className="nav-text" style={{ fontSize: "10px" }}>MUNE</span>
-      </div>
-      <div style={{ textAlign: "center" }}>
-        <Image src="/loopa.png" width={24} height={24} alt="LOOPA" style={{ display: "block", margin: "0 auto 6px" }} />
-        <span className="nav-text" style={{ fontSize: "10px" }}>LOOPA</span>
+  // --- 共通コンポーネント: 上部検索バー ---
+  const SearchHeader = () => (
+    <div style={{ padding: "20px 20px 10px", backgroundColor: "#fff" }}>
+      <div style={{ display: "flex", alignItems: "center", gap: "10px", backgroundColor: "#f3f4f6", padding: "8px 16px", borderRadius: "25px" }}>
+        <span style={{ color: "#999" }}>🔍</span>
+        <input
+          type="text"
+          placeholder="Search in Contents"
+          style={{ border: "none", backgroundColor: "transparent", width: "100%", outline: "none", color: "#666" }}
+        />
+        <div style={{ width: "32px", height: "32px", borderRadius: "50%", backgroundColor: "#3b82f6", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "14px", fontWeight: "bold" }}>
+          Y
+        </div>
       </div>
     </div>
   );
 
-  // --- ヘッダー ---
-  const Header = () => (
-    <div style={{ display: "flex", justifyContent: "flex-end", padding: "20px" }}>
-      <div style={{ width: "40px", height: "40px", borderRadius: "50%", overflow: "hidden", border: "1px solid #eee" }}>
-        <Image src="/profile.jpg" width={40} height={40} alt="User" />
+  // --- 共通コンポーネント: 下部ナビゲーション ---
+  const BottomNav = () => (
+    <div style={{ position: "fixed", bottom: 0, left: 0, right: 0, height: "85px", backgroundColor: "#fff", borderTop: "1px solid #f0f0f0", display: "flex", justifyContent: "space-around", alignItems: "center", paddingBottom: "15px", zIndex: 100 }}>
+      {/* GEMM (選択状態) */}
+      <div style={{ textAlign: "center", backgroundColor: "#f3f4f6", padding: "8px 20px", borderRadius: "25px", minWidth: "80px" }}>
+        <Image src="/gemm.png" width={22} height={22} alt="GEMM" style={{ display: "block", margin: "0 auto 4px" }} />
+        <span className="nav-text" style={{ fontSize: "10px", color: "#000" }}>GEMM</span>
+      </div>
+
+      <div style={{ textAlign: "center", minWidth: "80px" }}>
+        <Image src="/mune.png" width={22} height={22} alt="MUNE" style={{ display: "block", margin: "0 auto 4px", opacity: 0.6 }} />
+        <span className="nav-text" style={{ fontSize: "10px", color: "#999" }}>MUNE</span>
+      </div>
+
+      <div style={{ textAlign: "center", minWidth: "80px" }}>
+        <Image src="/loopa.png" width={22} height={22} alt="LOOPA" style={{ display: "block", margin: "0 auto 4px", opacity: 0.6 }} />
+        <span className="nav-text" style={{ fontSize: "10px", color: "#999" }}>LOOPA</span>
       </div>
     </div>
   );
 
   return (
     <>
-      <FontAndMetaSettings />
+      <GlobalSettings />
 
       {/* 1. ログイン画面 */}
       {view === "login" && (
         <main style={{ minHeight: "100vh", backgroundColor: "#fff", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "40px" }}>
           <div style={{ marginBottom: "60px" }}>
-            <Image src="/VENU_.logo.png" width={180} height={60} alt="VENU." priority />
+            {/* ロゴのファイル名を、実際にアップロードされていた名前に合わせています */}
+            <Image src="/VENU_.logo.png" width={200} height={70} alt="VENU." style={{ objectFit: "contain" }} priority />
           </div>
-          <form onSubmit={(e) => { e.preventDefault(); setView("list"); }} style={{ width: "100%", maxWidth: "300px", display: "flex", flexDirection: "column", gap: "12px" }}>
-            <input type="text" placeholder="name" required style={{ padding: "12px 16px", borderRadius: "8px", border: "1px solid #ccc" }} />
-            <input type="password" placeholder="password" required style={{ padding: "12px 16px", borderRadius: "8px", border: "1px solid #ccc" }} />
-            <button type="submit" style={{ marginTop: "12px", padding: "14px", borderRadius: "8px", border: "none", backgroundColor: "#0088cc", color: "#fff", fontSize: "16px", fontWeight: "bold", cursor: "pointer" }}>sign in</button>
+          <form onSubmit={(e) => { e.preventDefault(); setView("list"); }} style={{ width: "100%", maxWidth: "300px", display: "flex", flexDirection: "column", gap: "16px" }}>
+            <input type="text" placeholder="name" required style={{ padding: "14px 18px", borderRadius: "10px", border: "1px solid #e0e0e0", outline: "none" }} />
+            <input type="password" placeholder="password" required style={{ padding: "14px 18px", borderRadius: "10px", border: "1px solid #e0e0e0", outline: "none" }} />
+            <button type="submit" style={{ marginTop: "8px", padding: "14px", borderRadius: "10px", border: "none", backgroundColor: "#228be6", color: "#fff", fontSize: "16px", fontWeight: "bold", cursor: "pointer" }}>sign in</button>
           </form>
         </main>
       )}
 
-      {/* 2. マイページ */}
+      {/* 2. マイページ (一覧) */}
       {view === "list" && (
         <main style={{ minHeight: "100vh", backgroundColor: "#fff", paddingBottom: "100px" }}>
-          <Header />
-          <div style={{ padding: "0 24px" }}>
+          <SearchHeader />
+          <div style={{ padding: "10px 24px" }}>
+            <h2 style={{ fontSize: "14px", fontWeight: "bold", color: "#666", marginBottom: "20px" }}>Suggested</h2>
             {contents.map((item) => (
               <div key={item.id} onClick={() => { setSelected(item); setView("details"); }} style={{ display: "flex", alignItems: "center", gap: "16px", marginBottom: "20px", cursor: "pointer" }}>
-                <div style={{ width: "80px", height: "80px", borderRadius: "4px", overflow: "hidden", boxShadow: "0 2px 8px rgba(0,0,0,0.1)" }}>
-                  <Image src={item.image} width={80} height={80} alt={item.title} />
+                <div style={{ width: "70px", height: "70px", borderRadius: "8px", overflow: "hidden", boxShadow: "0 4px 12px rgba(0,0,0,0.08)" }}>
+                  <Image src={item.image} width={70} height={70} alt={item.title} style={{ objectFit: "cover" }} />
                 </div>
                 <div>
-                  <div style={{ fontWeight: "bold", fontSize: "16px" }}>{item.title}</div>
-                  <div style={{ fontSize: "12px", color: "#333", marginTop: "2px" }}>{item.artist}</div>
-                  <div style={{ fontSize: "12px", color: "#999", marginTop: "4px" }}>Serial: {item.serial}</div>
+                  <div style={{ fontWeight: "bold", fontSize: "15px" }}>{item.title}</div>
+                  <div style={{ fontSize: "12px", color: "#1a1a1a", marginTop: "2px" }}>{item.artist}</div>
+                  <div style={{ fontSize: "11px", color: "#aaa", marginTop: "4px" }}>Serial: {item.serial}</div>
                 </div>
               </div>
             ))}
@@ -117,21 +126,23 @@ export default function Home() {
       {/* 3. 詳細画面 */}
       {view === "details" && (
         <main style={{ minHeight: "100vh", backgroundColor: "#fff", paddingBottom: "100px" }}>
-          <Header />
-          <div style={{ padding: "0 24px", textAlign: "center" }}>
-            <button onClick={() => setView("list")} style={{ display: "block", marginBottom: "20px", background: "none", border: "none", color: "#999", fontSize: "14px", cursor: "pointer" }}>← Back</button>
-            <div style={{ width: "100%", maxWidth: "320px", margin: "0 auto", borderRadius: "8px", overflow: "hidden", boxShadow: "0 10px 30px rgba(0,0,0,0.15)" }}>
-              <Image src={selected.image} width={320} height={320} alt={selected.title} style={{ width: "100%", height: "auto" }} />
-            </div>
-            <div style={{ marginTop: "24px" }}>
-              <h2 style={{ fontSize: "20px", fontWeight: "bold", marginBottom: "4px" }}>{selected.title}</h2>
-              <p style={{ fontSize: "14px", color: "#333", marginBottom: "4px" }}>{selected.artist}</p>
-              <p style={{ fontSize: "12px", color: "#999" }}>Serial: {selected.serial}</p>
-            </div>
-            <div style={{ marginTop: "32px" }}>
-              <audio controls style={{ width: "100%", maxWidth: "320px" }}>
-                <source src="/FamilyMart_Demo.mp3" type="audio/mpeg" />
-              </audio>
+          <SearchHeader />
+          <div style={{ padding: "0 24px" }}>
+            <button onClick={() => setView("list")} style={{ margin: "10px 0 20px", background: "none", border: "none", color: "#aaa", fontSize: "14px", cursor: "pointer" }}>← Back</button>
+            <div style={{ textAlign: "center" }}>
+              <div style={{ width: "100%", maxWidth: "340px", margin: "0 auto", borderRadius: "12px", overflow: "hidden", boxShadow: "0 12px 40px rgba(0,0,0,0.12)" }}>
+                <Image src={selected.image} width={340} height={340} alt={selected.title} style={{ width: "100%", height: "auto" }} />
+              </div>
+              <div style={{ marginTop: "24px" }}>
+                <h2 style={{ fontSize: "22px", fontWeight: "bold", marginBottom: "4px" }}>{selected.title}</h2>
+                <p style={{ fontSize: "14px", color: "#333", marginBottom: "4px" }}>{selected.artist}</p>
+                <p style={{ fontSize: "12px", color: "#bbb" }}>Serial: {selected.serial}</p>
+              </div>
+              <div style={{ marginTop: "32px" }}>
+                <audio controls style={{ width: "100%", maxWidth: "340px" }}>
+                  <source src="/FamilyMart_Demo.mp3" type="audio/mpeg" />
+                </audio>
+              </div>
             </div>
           </div>
           <BottomNav />
