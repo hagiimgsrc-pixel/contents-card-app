@@ -199,7 +199,9 @@ const LoadingScreen = ({ onComplete }: { onComplete: () => void }) => {
             <div className="card-content">
               <div className="text-[10px] text-white/50 font-bold tracking-widest">VENU.</div>
               <div className="relative w-full aspect-square mt-2 mb-3 rounded-md overflow-hidden">
-                <Image src="/jacket.jpg" fill alt="Jacket" style={{ objectFit: 'cover' }} />
+                {/* ↓↓↓ ここを変更しました ↓↓↓ */}
+                <Image src="/business_class.JPG" fill alt="Artwork" style={{ objectFit: 'cover' }} />
+                {/* ↑↑↑ ここを変更しました ↑↑↑ */}
               </div>
               <div className="text-white text-sm font-bold">Business Class</div>
               <div className="text-white/40 text-[9px] font-mono tracking-wider">DARIO</div>
@@ -306,4 +308,35 @@ export default function Home() {
         </main>
       )}
 
-      {
+      {view === "details" && (
+        <main className="min-h-screen pb-24 bg-white">
+          <SearchHeader />
+          <div className="px-6 py-2">
+            <button onClick={() => setView("list")} className="mb-6 text-gray-400 text-xs">← Back to Collection</button>
+            <div className="flex flex-col items-center mb-10">
+              <div className="w-full max-w-[280px] aspect-square rounded-xl overflow-hidden shadow-2xl mb-6">
+                <Image src={selected.image} width={300} height={300} alt={selected.title} className="w-full h-full object-cover" />
+              </div>
+              <h2 className="text-xl font-bold">{selected.title}</h2>
+              <p className="text-blue-500 font-bold text-xs uppercase tracking-widest">{selected.artist}</p>
+            </div>
+
+            <div className="space-y-8">
+              <div className="bg-gray-50 p-4 rounded-xl">
+                <p className="text-[10px] font-bold text-gray-400 mb-2 uppercase">Audio Content</p>
+                <audio controls className="w-full h-10"><source src="/FamilyMart_Demo.mp3" /></audio>
+              </div>
+              <div>
+                <p className="text-[10px] font-bold text-gray-400 mb-3 uppercase">Bonus Video</p>
+                <div className="aspect-video bg-black rounded-xl overflow-hidden shadow-lg">
+                   <video controls className="w-full h-full"><source src="/Behind_The_Scenes.mp4" /></video>
+                </div>
+              </div>
+            </div>
+          </div>
+          <BottomNav />
+        </main>
+      )}
+    </>
+  );
+}
