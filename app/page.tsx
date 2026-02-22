@@ -31,9 +31,9 @@ const FontAndMetaSettings = () => (
 type ViewState = "login" | "loading" | "list" | "details";
 
 const contents = [
-  { id: 1, title: "Netherwalk", artist: "YOICHI HAGIWARA", serial: "1456", image: "/jacket.jpg" },
+  { id: 1, title: "Business Class", artist: "DARIO", serial: "1456", image: "/jacket.jpg" },
   { id: 2, title: "悠久のアルカナ", artist: "久牧彰", serial: "3122", image: "/jacket2.jpg" },
-  { id: 3, title: "SUNDANCE PLOP", artist: "PLOP", serial: "457", image: "/jacket3.jpg" },
+  { id: 3, title: "SUNDANCE", artist: "PLOP", serial: "457", image: "/jacket3.jpg" },
 ];
 
 // --- ローディング画面コンポーネント ---
