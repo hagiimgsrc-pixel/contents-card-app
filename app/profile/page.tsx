@@ -16,7 +16,7 @@ export default function ProfilePage() {
       {/* Profile Image & Name */}
       <div className="flex flex-col items-center py-8">
         <div className="w-24 h-24 rounded-full overflow-hidden border-2 border-gray-100 mb-3 shadow-inner">
-          <img src="https://github.com/hagiimgsrc-pixel.png" alt="Profile" className="w-full h-full object-cover" />
+          <img src="/profile.jpg" alt="Profile" className="w-full h-full object-cover" />
         </div>
         <h2 className="text-xl font-bold">萩原さん</h2>
         <p className="text-sm text-gray-500 mt-1">累計収益: 520 pt</p>
