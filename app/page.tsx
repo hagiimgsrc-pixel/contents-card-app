@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import { User, Settings, HelpCircle, Activity, ChevronRight, ArrowLeft, TrendingUp } from "lucide-react";
+import Link from 'next/link'; //
 
 // --- グローバルフォント・スタイル設定 ---
 const FontAndMetaSettings = () => (
@@ -133,9 +134,11 @@ export default function Home() {
         <span style={{ color: "#999" }}>🔍</span>
         <input type="text" placeholder="Search" style={{ border: "none", backgroundColor: "transparent", width: "100%", outline: "none", fontSize: "14px" }} />
       </div>
-      <div onClick={() => setView("profile")} style={{ width: "36px", height: "36px", borderRadius: "50%", overflow: "hidden", cursor: "pointer", border: "2px solid #eee" }}>
-        <Image src="/profile.jpg" width={36} height={36} alt="User" style={{ objectFit: "cover" }} />
-      </div>
+<Link href="/profile">
+  <div style={{ width: "36px", height: "36px", borderRadius: "50%", overflow: "hidden", cursor: "pointer", border: "2px solid #eee" }}>
+    <Image src="https://github.com/hagiimgsrc-pixel.png" width={36} height={36} alt="User" style={{ objectFit: "cover" }} />
+  </div>
+</Link>
     </div>
   );
 
