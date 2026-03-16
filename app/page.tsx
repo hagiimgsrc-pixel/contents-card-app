@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
-import { User, Settings, HelpCircle, Activity, ChevronRight, ArrowLeft, TrendingUp } from "lucide-react";
+import { User, Settings, HelpCircle, Activity, ChevronRight, ArrowLeft, TrendingUp, Search } from "lucide-react";
 import Link from 'next/link';
 
 // --- グローバルフォント・スタイル設定 ---
