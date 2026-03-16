@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import { User, Settings, HelpCircle, Activity, ChevronRight, ArrowLeft, TrendingUp } from "lucide-react";
-import Link from 'next/link'; //
+import Link from 'next/link';
 
 // --- グローバルフォント・スタイル設定 ---
 const FontAndMetaSettings = () => (
@@ -135,11 +135,12 @@ export default function Home() {
         <input type="text" placeholder="Search" style={{ border: "none", backgroundColor: "transparent", width: "100%", outline: "none", fontSize: "14px" }} />
       </div>
 <Link href="/profile">
-  <div style={{ width: "36px", height: "36px", borderRadius: "50%", overflow: "hidden", cursor: "pointer", border: "2px solid #eee" }}>
-    <img src="https://github.com/hagiimgsrc-pixel.png" alt="User" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+      <div style={{ width: "36px", height: "36px", borderRadius: "50%", overflow: "hidden", cursor: "pointer", border: "2px solid #eee" }}>
+        <img src="https://github.com/hagiimgsrc-pixel.png" alt="User" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+      </div>
+    </Link>
   </div>
-</Link>
-</div>
+);
 
   const BottomNav = () => (
     <div style={{ position: "fixed", bottom: 0, left: 0, right: 0, backgroundColor: "#fff", borderTop: "1px solid #eee", display: "flex", justifyContent: "space-around", padding: "12px 0 20px", zIndex: 10 }}>
