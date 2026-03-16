@@ -136,10 +136,9 @@ export default function Home() {
       </div>
 <Link href="/profile">
   <div style={{ width: "36px", height: "36px", borderRadius: "50%", overflow: "hidden", cursor: "pointer", border: "2px solid #eee" }}>
-    <Image src="https://github.com/hagiimgsrc-pixel.png" width={36} height={36} alt="User" style={{ objectFit: "cover" }} />
+    <img src="https://github.com/hagiimgsrc-pixel.png" alt="User" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
   </div>
 </Link>
-    </div>
   );
 
   const BottomNav = () => (
