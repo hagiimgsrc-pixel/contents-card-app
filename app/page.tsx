@@ -128,19 +128,23 @@ export default function Home() {
 
   useEffect(() => { window.scrollTo(0, 0); }, [view]);
 
-  const SearchHeader = () => (
+const SearchHeader = () => (
     <div style={{ padding: "16px 24px", backgroundColor: "#fff", display: "flex", alignItems: "center", gap: "16px", borderBottom: "1px solid #f0f0f0", position: "sticky", top: 0, zIndex: 10 }}>
       <div style={{ flex: 1, display: "flex", alignItems: "center", gap: "10px", backgroundColor: "#f3f4f6", padding: "10px 16px", borderRadius: "25px" }}>
-        <span style={{ color: "#999" }}>🔍</span>
+        <span style={{ color: "#999" }}><Search size={18} /></span>
         <input type="text" placeholder="Search" style={{ border: "none", backgroundColor: "transparent", width: "100%", outline: "none", fontSize: "14px" }} />
       </div>
-<Link href="/profile">
-      <div style={{ width: "36px", height: "36px", borderRadius: "50%", overflow: "hidden", cursor: "pointer", border: "2px solid #eee" }}>
-        <img src="https://github.com/hagiimgsrc-pixel.png" alt="User" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
-      </div>
-    </Link>
-  </div>
-);
+      <Link href="/profile">
+        <div style={{ width: "36px", height: "36px", borderRadius: "50%", overflow: "hidden", cursor: "pointer", border: "2px solid #eee" }}>
+          <img 
+            src="https://github.com/hagiimgsrc-pixel.png" 
+            alt="User" 
+            style={{ width: "100%", height: "100%", objectFit: "cover" }} 
+          />
+        </div>
+      </Link>
+    </div>
+  );
 
   const BottomNav = () => (
     <div style={{ position: "fixed", bottom: 0, left: 0, right: 0, backgroundColor: "#fff", borderTop: "1px solid #eee", display: "flex", justifyContent: "space-around", padding: "12px 0 20px", zIndex: 10 }}>
