@@ -365,7 +365,7 @@ export default function Home() {
       <Link href="/profile">
         <div style={{ width: "36px", height: "36px", borderRadius: "50%", overflow: "hidden", flexShrink: 0, cursor: "pointer", border: "2px solid #eee" }}>
           <img 
-            src="https://github.com/hagiimgsrc-pixel.png" 
+            src="/profile.jpg" 
             alt="User" 
             style={{ width: "100%", height: "100%", objectFit: "cover" }} 
           />
