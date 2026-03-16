@@ -139,7 +139,7 @@ export default function Home() {
     <img src="https://github.com/hagiimgsrc-pixel.png" alt="User" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
   </div>
 </Link>
-  );
+</div>
 
   const BottomNav = () => (
     <div style={{ position: "fixed", bottom: 0, left: 0, right: 0, backgroundColor: "#fff", borderTop: "1px solid #eee", display: "flex", justifyContent: "space-around", padding: "12px 0 20px", zIndex: 10 }}>
