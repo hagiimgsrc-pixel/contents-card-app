@@ -146,11 +146,11 @@ const SearchHeader = () => (
     </div>
   );
 
-  const BottomNav = () => (
+const BottomNav = () => (
     <div style={{ position: "fixed", bottom: 0, left: 0, right: 0, backgroundColor: "#fff", borderTop: "1px solid #eee", display: "flex", justifyContent: "space-around", padding: "12px 0 20px", zIndex: 10 }}>
       <div onClick={() => setView("list")} style={{ textAlign: "center", opacity: view === "list" ? 1 : 0.4 }}><Activity size={24} /><span className="nav-text" style={{ fontSize: "9px", display: "block" }}>GEMM</span></div>
-      <div style={{ textAlign: "center", opacity: 0.4 }}><TrendingUp size={24} /><span className="nav-text" style={{ fontSize: "9px", display: "block" }}>MUNE</span></div>
-      <div style={{ textAlign: "center", opacity: 0.4 }}><User size={24} /><span className="nav-text" style={{ fontSize: "9px", display: "block" }}>LOOPA</span></div>
+      <div style={{ textAlign: "center", opacity: 0.4 }}><TrendingUp size={24} /><span className="nav-text" style={{ fontSize: "9px", display: "block" }}>LOOPA</span></div>
+      <div style={{ textAlign: "center", opacity: 0.4 }}><User size={24} /><span className="nav-text" style={{ fontSize: "9px", display: "block" }}>MUNE</span></div>
     </div>
   );
 
