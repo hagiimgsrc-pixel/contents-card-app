@@ -437,7 +437,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--ft);background:#fff;colo
 <div style="font-size:72px;color:#fbbf24;text-shadow:0 0 50px rgba(251,191,36,0.9),0 0 100px rgba(251,191,36,0.4);margin-bottom:16px;letter-spacing:12px">★★</div>
 <div style="font-family:var(--mn);font-size:14px;letter-spacing:0.3em;text-transform:uppercase;color:rgba(255,220,100,0.85);text-shadow:0 0 16px rgba(255,200,50,0.6);margin-bottom:20px">Your Star</div>
 <div style="font-size:14px;color:rgba(255,255,255,0.6);line-height:1.8;margin-bottom:32px">日々の応援が結晶になりました</div>
-<button class="btn" style="background:linear-gradient(135deg,#fbbf24,#f59e0b);color:#1a0a00;width:200px;margin:0 auto;font-weight:700" onclick="hideSS()">GEMMを見る</button>
+<button class="btn" style="background:linear-gradient(135deg,#fbbf24,#f59e0b);color:#1a0a00;width:200px;margin:0 auto;font-weight:700" onclick="hideSS()">プロフィールへ</button>
 </div>
 </div>
 </div>
@@ -457,7 +457,7 @@ function tabGo(t){go(t)}
 function showModal(id){document.getElementById(id).classList.add('show')}
 function hideModal(id){document.getElementById(id).classList.remove('show');document.querySelectorAll('audio').forEach(a=>a.pause())}
 function showSS(){document.getElementById('starSurprise').classList.add('show');startStarAnim()}
-function hideSS(){document.getElementById('starSurprise').classList.remove('show');go('gemmDetail')}
+function hideSS(){document.getElementById('starSurprise').classList.remove('show');go('profile')}
 function showStarTab(el,id){el.parentElement.querySelectorAll('.pill').forEach(p=>p.classList.remove('act'));el.classList.add('act');['gb','gs1','gs2'].forEach(t=>{const e=document.getElementById(t);if(e)e.style.display=t===id?'block':'none'})}
 function fP(pillId,postId,type,el){document.getElementById(pillId).querySelectorAll('.pill,.pill-cf').forEach(p=>p.classList.remove('act'));el.classList.add('act');const c=document.getElementById(postId);if(!c)return;c.querySelectorAll('[data-type]').forEach(p=>{p.style.display=type==='all'?'':p.getAttribute('data-type')===type?'':'none'})}
 function fmtTime(s){if(isNaN(s))return'0:00';const m=Math.floor(s/60),sec=Math.floor(s%60);return m+':'+(sec<10?'0':'')+sec}
